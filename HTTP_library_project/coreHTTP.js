@@ -56,6 +56,26 @@ class library {
     }
   }
 
+  async patch(url, data) {
+    try {
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) {
+        throw new Error(`PATCH Error: ${response.status}`);
+      }
+      const responseData = await response.json();
+      return ShowResponse(responseData);
+    } 
+    catch (error) {
+      return error.message;
+    }
+  }
+
   async delete(url) {
     try {
       const response = await fetch(url, {
