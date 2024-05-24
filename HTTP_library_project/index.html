@@ -4,41 +4,56 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Title of the HTML document -->
   <title>CoreHTTP Testbed</title>
+  <!-- Link tag to include an external stylesheet -->
   <link rel="stylesheet" href="styles/csc3221.css">
+
+  <!-- Internal CSS styles for the document -->
   <style>
+    /* Styling for the input area */
     #inputArea {
       display: flex;
       flex: wrap;
       justify-content: start;
       align-items: center;
     }
+    /* Styling for labels in the input area */
     #inputArea label {
       margin: 1rem;
       font-size: inherit;
       font-family: inherit;
     }
+    /* Styling for the URL area */
     #urlArea {
       display: flex;
       flex-direction: row;
     }
+    /* Styling for user ID area */
     #uIdArea {
       display: flex;
     }
+    /* Styling for username area */
     #uNameArea {
       display: flex;
     }
+    /* Styling for email area */
     #uMailArea {
       display: flex;
     }
   </style>
 </head>
 <body>
+  <!-- Page area containing the form and response section -->
   <div class="page-area">
+    <!-- Heading for the page -->
     <h2 id="page-title">CoreHTTP Library Testbed</h2>
+    <!-- Form for sending requests -->
     <form id="request-form">
+      <!-- Section for input areas -->
       <h4>Request:</h4>
       <section id="inputArea">
+        <!-- URL input area -->
         <div id="urlArea">
           <label for="route">Route:</label>
           <input type="url" name="url" id="route" 
@@ -47,36 +62,48 @@
                   pattern="https://.*"
                   readonly>
         </div>
+        <!-- User ID input area -->
         <div id="uIdArea">
           <label for="userId">User ID:</label>
           <input type="text" name="userId" size="3">
         </div>
+        <!-- User name input area -->
         <div id="uNameArea">
           <label for="uname">User Name:</label>
           <input type="text" name="uname" size="20">
         </div>
+        <!-- Email input area -->
         <div id="uMailArea">
           <label for="umail">Email:</label>
           <input type="text" name="umail" size="20">
         </div>
       </section>
+      <!-- Fieldset for selecting HTTP method -->
       <fieldset>
         <legend>Method:</legend>
-        <input type="radio" id="rbGet" name="HTTPtype" value="get" checked>&nbspGET
-        <input type="radio" id="rbPost" name="HTTPtype"  value="post">&nbspPOST</label>
-        <input type="radio" id="rbPut" name="HTTPtype" value="put">&nbspPUT 
-        <input type="radio" id="rbPatch" name="HTTPtype" value="patch">&nbspPATCH
-        <input type="radio" id="rbDelete" name="HTTPtype" value="delete">&nbspDELETE 
+        <!-- Radio buttons for selecting HTTP methods -->
         <div>
+        <input type="radio" id="rbGet" name="HTTPtype" value="get" checked>&nbspGET
+        </div><div>
+        <input type="radio" id="rbPost" name="HTTPtype"  value="post">&nbspPOST</label>
+        </div><div>
+        <input type="radio" id="rbPut" name="HTTPtype" value="put">&nbspPUT
+        </div><div>
+        <input type="radio" id="rbPatch" name="HTTPtype" value="patch">&nbspPATCH
+        </div><div>
+        <input type="radio" id="rbDelete" name="HTTPtype" value="delete">&nbspDELETE
+        </div><div>
           <input type="submit" value="SEND" class="primary-button" id="SendReq">
         </div>
       </fieldset>
     </form>
+    <!-- Section for displaying the response -->
     <h4>Response:</h4>
     <section id="response"></section>
   </div>
-
+  <!-- Script tag to include the coreHTTP.js file -->
   <script src="coreHTTP.js"></script>
+  <!-- Script tag to include the script.js file -->
   <script src="script.js"></script>
 </body>
 </html>
