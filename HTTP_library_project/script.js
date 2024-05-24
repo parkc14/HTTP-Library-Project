@@ -9,10 +9,10 @@ function ShowResponse(responseData) {
     html += `<li>${responseData}</li>`;
   } else if (Array.isArray(responseData)) {
     responseData.forEach(user => {
-      html += `<li>User ${user.id} - ${user.name}</li>`;
+      html += `<li>User ${user.id} - ${user.name} - ${user.email}</li>`;
     })
   } else {
-    html += `<li>User ${responseData.id} - ${responseData.name}</li>`;
+    html += `<li>User ${responseData.id} - ${responseData.name} - ${responseData.email}</li>`;
   }
   document.querySelector("#response").innerHTML = html;
 }
@@ -54,7 +54,7 @@ function ValidId(id, required = false) {
 
   if (!isValid) {
     document.querySelector("#uIdArea>input").style.border = "2px solid red";
-    document.querySelector("#uIdArea>input").value = "err";
+    document.querySelector("#uIdArea>input").value = "Error!";
   }
   
   return isValid;
@@ -66,6 +66,17 @@ function ValidName(fullName) {
     isValid = false;
     document.querySelector("#uNameArea>input").style.border = "2px solid red";
     document.querySelector("#uNameArea>input").placeholder = "Name required!";
+  }
+
+  return isValid;
+}
+
+function ValidEmail(email) {
+  let isValid = true;
+  if (!email.length > 0) {
+    isValid = false;
+    document.querySelector("#uMailArea>input").style.border = "2px solid red";
+    document.querySelector("#uMailArea>input").placeholder = "Email required!";
   }
 
   return isValid;
@@ -94,9 +105,10 @@ function SetupRequest() {
   if (reqType === "post") {
     document.querySelector("#uIdArea>input").value = "";
     let uFullName = document.querySelector("#uNameArea>input").value;
-    if (ValidName(uFullName)) {
+    let uMail = document.querySelector("#uMailArea>input").value;
+    if (ValidName(uFullName) && ValidEmail(uMail)) {
       let uName = uFullName.split(" ")[0].trim();
-      let uMail = uName.concat("@spu.edu");
+      uMail = uMail.concat("@spu.edu");
       data = {
         name:`${uFullName}`,
         username:`${uName}`,
@@ -109,9 +121,15 @@ function SetupRequest() {
     okToSend = false;
     if (ValidId(document.querySelector("#uIdArea>input").value,true)) {
       let uFullName = document.querySelector("#uNameArea>input").value;
-      if (ValidName(uFullName) || reqType === "patch") {
+      let uMail = document.querySelector("#uMailArea>input").value;
+      if ((ValidName(uFullName) && ValidEmail(uMail)) || (reqType === "patch" && ValidEmail(uMail)) || (reqType === "patch" && ValidName(uFullName))) {
         let uName = uFullName.split(" ")[0].trim();
-        let uMail = uName.concat("@spu.edu");
+        if (uMail===""&&uName!==""){
+          uMail = uName.concat("@spu.edu");
+        }
+        else{
+          uMail = uMail.concat("@spu.edu");
+        }
         data = {
           ...(uFullName && { name: `${uFullName}` }),
           ...(uFullName && { username: `${uName}` }),
@@ -122,6 +140,7 @@ function SetupRequest() {
     }
   }
 
+
   if (reqType === "delete") {
     document.querySelector("#uNameArea>input").value = "";
     okToSend = (ValidId(document.querySelector("#uIdArea>input").value,true));
@@ -131,9 +150,11 @@ function SetupRequest() {
     route = route.concat(document.querySelector("#uIdArea>input").value);
     document.querySelector("#uIdArea>input").style.border = "1px solid lightgrey";
     document.querySelector("#uNameArea>input").style.border = "1px solid lightgrey";
+    document.querySelector("#uMailArea>input").style.border = "1px solid lightgrey";
     sendRequest(reqType,route, data);
     document.querySelector("#uIdArea>input").value = "";
     document.querySelector("#uNameArea>input").value = "";
+    document.querySelector("#uMailArea>input").value = "";
   } else {
     console.log("Input Error");
   }
@@ -145,19 +166,26 @@ function SetupInput(reqType) {
     case "get":
       document.querySelector("#uIdArea").style.display = "flex";
       document.querySelector("#uNameArea").style.display = "none";
+      document.querySelector("#uMailArea").style.display = "none";
       break;
     case "post":
       document.querySelector("#uIdArea").style.display = "none";
       document.querySelector("#uNameArea").style.display = "flex";
+      document.querySelector("#uMailArea").style.display = "flex";
       break;
     case "put":
+      document.querySelector("#uIdArea").style.display = "flex";
+      document.querySelector("#uNameArea").style.display = "flex";
+      document.querySelector("#uMailArea").style.display = "flex";
     case "patch":
       document.querySelector("#uIdArea").style.display = "flex";
       document.querySelector("#uNameArea").style.display = "flex";
+      document.querySelector("#uMailArea").style.display = "flex";
       break;
     case "delete":
       document.querySelector("#uIdArea").style.display = "flex";
       document.querySelector("#uNameArea").style.display = "none";
+      document.querySelector("#uMailArea").style.display = "none";
       break;
   }
 }
