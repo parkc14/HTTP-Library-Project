@@ -121,7 +121,8 @@ function ValidEmail(email) {
 function SetupRequest() {
   // Get the route value from the input field.
   let route = document.querySelector("#route").value;
-  let data = "";
+  // Initialize an empty object to store the data for the request.
+  let data = {};
 
   // Get all radio buttons with name HTTPtype.
   const radioButtons = document.querySelectorAll("input[name='HTTPtype'");
@@ -155,14 +156,10 @@ function SetupRequest() {
     let uMail = document.querySelector("#uMailArea>input").value;
     // Validate the name and email.
     if (ValidName(uFullName) && ValidEmail(uMail)) {
-      // Extract the first name from the full name and append the domain to the email.
-      let uName = uFullName.split(" ")[0].trim();
-      uMail = uMail.concat("@spu.edu");
       // Set up the data object with the name, username, and email.
       data = {
-        name:`${uFullName}`,
-        username:`${uName}`,
-        email:`${uMail}`
+        name: uFullName,
+        email: uMail
       };
       // Set okToSend to true if validation passes.
       okToSend = true; 
@@ -180,21 +177,12 @@ function SetupRequest() {
       let uMail = document.querySelector("#uMailArea>input").value;
       // Validate the name and email based on the request type.
       if ((ValidName(uFullName) && ValidEmail(uMail)) || (reqType === "patch" && ValidEmail(uMail)) || (reqType === "patch" && ValidName(uFullName))) {
-        // Extract the first name from the full name.
-        let uName = uFullName.split(" ")[0].trim();
-        // If email is empty but name is provided, generate an email using name.
-        if (uMail==="" && uName!==""){
-          uMail = uName.concat("@spu.edu");
-        }
-        // Else name is empty but email is not, generate an email using email name.
-        else{
-          uMail = uMail.concat("@spu.edu");
-        }
         // Set up the data object with the provided values.
         data = {
-          ...(uFullName && { name: `${uFullName}` }),
-          ...(uFullName && { username: `${uName}` }),
-          ...(uFullName && { email: `${uMail}` })
+          // Includes name only if provided
+          name: uFullName || undefined, 
+          // Includes email only if provided
+          email: uMail || undefined
         };
         // Set okToSend to true if validation passes.
         okToSend = true; 
