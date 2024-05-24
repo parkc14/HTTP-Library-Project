@@ -29,6 +29,9 @@ function sendRequest(reqType, targetURL, data) {
     case "put": // Put (update) user in the endpoint
       http.put(targetURL, data);
       break;
+    case "patch": // Put (modify) user in the endpoint
+      http.patch(targetURL, data);
+      break;
     case "delete": // Delete user in the placeholder website
       http.delete(targetURL);
       break;            
@@ -102,17 +105,18 @@ function SetupRequest() {
     };
   }
 
-  if (reqType === "put") {
+  if (reqType === "put" || reqType === "patch") {
     okToSend = false;
     if (ValidId(document.querySelector("#uIdArea>input").value,true)) {
       let uFullName = document.querySelector("#uNameArea>input").value;
-      if (ValidName(uFullName)) {
+      if (ValidName(uFullName) || reqType === "patch") {
         let uName = uFullName.split(" ")[0].trim();
         let uMail = uName.concat("@spu.edu");
         data = {
-          name:`${uFullName}`,
-          username:`${uName}`,
-          email:`${uMail}`};
+          ...(uFullName && { name: `${uFullName}` }),
+          ...(uFullName && { username: `${uName}` }),
+          ...(uFullName && { email: `${uMail}` })
+        };
         okToSend = true;
       };
     }
@@ -147,6 +151,7 @@ function SetupInput(reqType) {
       document.querySelector("#uNameArea").style.display = "flex";
       break;
     case "put":
+    case "patch":
       document.querySelector("#uIdArea").style.display = "flex";
       document.querySelector("#uNameArea").style.display = "flex";
       break;
@@ -166,6 +171,7 @@ function StartUp() {
   document.querySelector("#rbGet").addEventListener("change", () => SetupInput("get"));
   document.querySelector("#rbPost").addEventListener("change", () => SetupInput("post"));
   document.querySelector("#rbPut").addEventListener("change", () => SetupInput("put"));
+  document.querySelector("#rbPatch").addEventListener("change", () => SetupInput("patch"));
   document.querySelector("#rbDelete").addEventListener("change", () => SetupInput("delete"));
 
   // Add the listener to the SEND button
