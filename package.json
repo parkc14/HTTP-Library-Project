@@ -1,0 +1,12 @@
+{
+  "name": "spu_csc3221_team8",
+  "version": "1.0.0",
+  "description": "Projects:\r HTTP Library Project,\r List Manager Project,\r Task Manager Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
