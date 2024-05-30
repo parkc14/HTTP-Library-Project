@@ -1,4 +1,5 @@
 const http = new coreHTTP;
+//const {ReadData, WriteData} = require(`/List_manager_project/filemgr.js`);
 
 // Block Variables
 let theList = [];
@@ -23,23 +24,47 @@ function ShowList() {
   result.innerHTML = output;
 }
 
-async function GetList() {
 
+
+async function GetList() {
+  try { 
+    theList[0] = await fetch(`/api`);
+    // const response = await fetch(`List_manager_project/filemgr.js/ReadData`);
+    // theList[0] = response;
+    ShowList(theList);
+  }
+  catch (error) {
+    console.log(error);
+  }
 }
 
-async function WriteList() {
-
+async function WriteList() {  
+  try{
+    await WriteData(theList);
+  }catch (error) {
+    console.log(error);
+  }
 }
 
 /* Listener Functions */
 async function httpPost(e) {
-
-  
+  e.preventDefault();
+  const newItem = input.value.trim();
+  if (newItem) {
+    theList.push(newItem);
+    input.value = '';
+    await WriteList();
+  }
 }
 
-function httpDelete(e) {
-
-  
+async function httpDelete(e) {
+  e.preventDefault();
+  const itemToDelete = input.value.trim();
+  if (itemToDelete) {
+    theList = theList.filter(itm => itm !== itemToDelete);
+    input.value = '';
+    await WriteList();
+  }
 }
 
 // Loading functions

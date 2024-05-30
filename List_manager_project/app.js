@@ -1,8 +1,9 @@
 // Get 3rd Party modules
 const express = require("express");
+// import express from 'express';
 // Get Custom built modules
 const fm = require("./filemgr");
-
+// import fm from "./filemgr.js";
 // Create the express http server
 const app = express();
 
@@ -12,11 +13,12 @@ app.use(express.json());
 
 // Define HTTP routes listenting for requests
 app.get("/api", async (req,res) => {
-
+  res.sendFile(fm);
 })
 
 app.post("/api", async (req,res) => {
-
+    await fm.WriteData(req.body);
+    res.send();
 })
 
 // page not found route
