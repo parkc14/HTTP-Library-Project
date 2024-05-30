@@ -1,5 +1,4 @@
 const http = new coreHTTP;
-//const {ReadData, WriteData} = require(`/List_manager_project/filemgr.js`);
 
 // Block Variables
 let theList = [];
@@ -16,33 +15,36 @@ delButton.addEventListener("click", httpDelete);
 
 /* Helper Functions */
 function ShowList() {
+  console.log("ShowList() called");
   let output = "<ul>";
   for (const itm of theList) {
     output += `<li>${itm}</li>`;
   }
   output += "</ul>";
+  console.log("Output:", output);
   result.innerHTML = output;
 }
 
-
-
 async function GetList() {
-  try { 
-    theList[0] = await fetch(`/api`);
-    // const response = await fetch(`List_manager_project/filemgr.js/ReadData`);
-    // theList[0] = response;
-    ShowList(theList);
-  }
+  try {
+    const listData = await http.get("/api");
+    theList = listData;
+    ShowList();
+  } 
   catch (error) {
-    console.log(error);
+    console.error("Error fetching list:", error);
+    result.innerHTML = "Error fetching list.";
   }
 }
 
-async function WriteList() {  
-  try{
-    await WriteData(theList);
-  }catch (error) {
-    console.log(error);
+async function WriteList() {
+  try {
+    const response = await http.post("/api", theList);
+    console.log("Server Response:", response); 
+  } 
+  catch (error) {
+    console.error("Error writing list:", error);
+    result.innerHTML = "Error writing list.";
   }
 }
 
@@ -52,7 +54,8 @@ async function httpPost(e) {
   const newItem = input.value.trim();
   if (newItem) {
     theList.push(newItem);
-    input.value = '';
+    ShowList();
+    input.value = "";
     await WriteList();
   }
 }
@@ -60,11 +63,23 @@ async function httpPost(e) {
 async function httpDelete(e) {
   e.preventDefault();
   const itemToDelete = input.value.trim();
-  if (itemToDelete) {
-    theList = theList.filter(itm => itm !== itemToDelete);
-    input.value = '';
-    await WriteList();
+
+  if (itemToDelete === "") {
+    theList.pop();
+    ShowList();
+  } else {
+    const index = theList.indexOf(itemToDelete);
+    if (index > -1) {
+      theList.splice(index, 1); 
+      ShowList();
+    } else {
+      alert(`Item "${itemToDelete}" not found in the list.`);
+      return;
+    }
   }
+
+  await WriteList();
+  input.value = ""; 
 }
 
 // Loading functions

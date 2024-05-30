@@ -1,30 +1,22 @@
-const fs = require("fs/promises");
-// import fs from 'fs/promises';
+const fs = require("fs/promises")
 
 async function ReadData() {
   try {
-    await fs.access("./listdata.js", fs.constants.R_OK || fs.constants.W_OK);
-    const response = await fs.readFile("./listdata.json", "utf8");
-    console.log(response.toJSON);
-    return JSON.parse(response); 
+    await fs.access("listdata.json");
+    const data = await fs.readFile("listdata.json");
+    return JSON.parse(data);
   } catch (error) {
-    console.log(error);
+    return [];
   }
 }
-
 
 async function WriteData(dataOut) {
   try {
-    await fs.access("./listdata.js", fs.constants.R_OK || fs.constants.W_OK);
-    const data = JSON.stringify(dataOut);
-    await fs.writeFile("./listdata.json", data, 'utf8');
-    console.log("dataOut: " + dataOut);
-    return;
-    
+    await fs.writeFile("listdata.json", JSON.stringify(dataOut));
   } catch (error) {
-    console.log(error);
+    throw new Error("Error writing data");
   }
 }
-// export default {ReadData, WriteData};
+
 exports.ReadData = ReadData;
 exports.WriteData = WriteData;

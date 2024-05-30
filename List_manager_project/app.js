@@ -1,9 +1,8 @@
 // Get 3rd Party modules
 const express = require("express");
-// import express from 'express';
 // Get Custom built modules
 const fm = require("./filemgr");
-// import fm from "./filemgr.js";
+
 // Create the express http server
 const app = express();
 
@@ -12,14 +11,26 @@ app.use(express.static("./Client"));
 app.use(express.json());
 
 // Define HTTP routes listenting for requests
-app.get("/api", async (req,res) => {
-  res.sendFile(fm);
-})
+app.get("/api", async (req, res) => {
+  try {
+    const data = await fm.ReadData();
+    res.json(data);
+  } 
+  catch (error) {
+    res.status(500).send("Error reading list.");
+  }
+});
 
-app.post("/api", async (req,res) => {
-    await fm.WriteData(req.body);
-    res.send();
-})
+app.post("/api", async (req, res) => {
+  try {
+    const newList = req.body.list;
+    await fm.WriteData(newList);
+    res.json({ message: "Data saved." });
+  } 
+  catch (error) {
+    res.status(500).send("Error writing list.");
+  }
+});
 
 // page not found route
 app.all("*", (req,res) => {
