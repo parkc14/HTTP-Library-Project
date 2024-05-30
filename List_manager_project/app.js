@@ -15,19 +15,19 @@ app.get("/api", async (req, res) => {
   try {
     const data = await fm.ReadData();
     res.json(data);
-  } 
-  catch (error) {
+  } catch (error) {
     res.status(500).send("Error reading list.");
   }
 });
 
 app.post("/api", async (req, res) => {
   try {
-    const newList = req.body.list;
-    await fm.WriteData(newList);
+    const data = await fm.ReadData();
+    const newItem = req.body.item;
+    data.push(newItem);
+    await fm.WriteData(data);
     res.json({ message: "Data saved." });
-  } 
-  catch (error) {
+  } catch (error) {
     res.status(500).send("Error writing list.");
   }
 });

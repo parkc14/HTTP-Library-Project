@@ -40,9 +40,11 @@ async function GetList() {
 async function WriteList() {
   try {
     const response = await http.post("/api", theList);
-    console.log("Server Response:", response); 
-  } 
-  catch (error) {
+    console.log("Server Response:", response);  
+    if (response.message === "Data saved") {
+      ShowList(); 
+    }
+  } catch (error) {
     console.error("Error writing list:", error);
     result.innerHTML = "Error writing list.";
   }
