@@ -66,8 +66,9 @@ async function httpDelete(e) {
   e.preventDefault();
   const itemToDelete = input.value.trim();
 
-  if (itemToDelete === "") {
+  if (itemToDelete === "") {  
     theList.pop();
+    console.log("Deleted last item on the list")
     ShowList();
   } else {
     const index = theList.indexOf(itemToDelete);
