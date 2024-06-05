@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="csc3221.css">
+  <title>Task Manager</title>
+</head>
+<body>
+  <div class="page-area">
+    <h1>Task Manager</h1>
+    <form>
+      <section>
+        <div>
+          <label for="listitem" item id= "listLabel"style="display: none;">Select Task</label>
+        </div>
+        <input type="text"
+        name="listitem"
+        id="listitem"
+        autocomplete="false"
+        />
+        <section id="updateInput", style="display:none;">
+          <div>
+            <label for="updateitem">Task Update</label>
+          </div>
+          <input type="text"
+          name="updateitem"
+          id="updateitem"
+          autocomplete="false"
+          />
+        </section>
+      </section>
+      <button type="submit" class="add-btn">Add</button>
+      <button type="submit" class="del-btn">Delete</button>
+      <button type="submit" class="upd-btn">Update</button>
+      <button type="submit" class="comp-btn">Completed</button>
+      <button type="submit" class="conf-btn" style="display: none;">Confirm</button>
+      <h3>List of Tasks</h3>
+    </form>
+    <div class="result"></div>
+  </div>
+  <script src="corehttp.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>
